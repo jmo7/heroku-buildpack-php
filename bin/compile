@@ -59,10 +59,8 @@ curl --silent --max-time 60 --location "$PHP_URL" | tar xz
 
 NEWRELIC_URL="http://s3.amazonaws.com/fs-static-prod/mpod-wp/newrelic-${NEWRELIC_VERSION}-heroku.tar.gz"
 echo "-----> Bundling NewRelic version $NEWRELIC_VERSION"
-curl --silent --max-time 60 --location "$NEWRELIC_URL" | tar xz
+curl --silent --max-time 60 --location "$NEWRELIC_URL"
 
-
-# tar xzf ${NEWRELIC_FILE} -C ./local
 tar xzf newrelic-${NEWRELIC_VERSION}-heroku.tar.gz -C ./local
 
 
