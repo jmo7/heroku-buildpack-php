@@ -89,13 +89,6 @@ cat >>boot.sh
 
 echo "newrelic.license=\"${NEW_RELIC_LICENSE_KEY}\"" >> php/php.ini
 
-echo " "
-echo php/php.ini
-echo " "
-
-#if [ "\${NEW_RELIC_LICENSE_KEY}" ]; then
-#/app/local/bin/newrelic-daemon -c /app/local/etc/newrelic.cfg -d error
-#fi
 
 for var in \`env|cut -f1 -d=\`; do
   echo "PassEnv \$var" >> /app/apache/conf/httpd.conf;
