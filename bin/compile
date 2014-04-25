@@ -75,13 +75,15 @@ cp $LP_DIR/conf/php.ini php
 mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
+# Set NEWRELIC key
+if [ -x "local/bin/newrelic-license" ]; then
+local/bin/newrelic-license
+echo "Setting the NewRelic license"
+fi
+
 cat >>boot.sh <<EOF
 
-# Set NEWRELIC key
-if [ -x "/app/local/bin/newrelic-license" ]; then
-/app/local/bin/newrelic-license
-echo "just set the NewRelic license"
-fi
+
 
 #if [ "\${NEW_RELIC_LICENSE_KEY}" ]; then
 #/app/local/bin/newrelic-daemon -c /app/local/etc/newrelic.cfg -d error
