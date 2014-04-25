@@ -66,22 +66,6 @@ curl --silent --max-time 60 --location "$NEWRELIC_URL" | tar xz -C ./local
 
 
 
-set -x
-ls $PWD
-set +x
-cd apache
-echo " "
-set -x
-ls $PWD
-set +x
-
-#cp -R newrelic-${NEWRELIC_VERSION}-heroku/* local/
-#tar xzf newrelic-${NEWRELIC_VERSION}-heroku.tar.gz -C ./local
-
-
-
-
-
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
