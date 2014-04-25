@@ -17,11 +17,18 @@ APACHE_VERSION="2.2.25"
 APACHE_PATH="apache"
 PHP_VERSION="5.3.27"
 PHP_PATH="php"
+NEWRELIC_VERSION=2.9.5.78
+
+
 
 BIN_DIR=$(dirname $0)
 BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
+echo 'BIN_DIR = $BIN_DIR'
+echo 'BUILD_DIR = $BUILD_DIR'
+echo 'CACHE_DIR = $CACHE_DIR'
+echo 'LP_DIR = $LP_DIR'
 
 # include .files when moving things around
 shopt -s dotglob
@@ -50,6 +57,19 @@ PHP_URL="https://heroku-buildpack-php.s3.amazonaws.com/php-$PHP_VERSION""$heroku
 echo "-----> Bundling PHP version $PHP_VERSION"
 curl --silent --max-time 60 --location "$PHP_URL" | tar xz
 
+NEWRELIC_URL="http://s3.amazonaws.com/fs-static-prod/mpod-wp/newrelic-${NEWRELIC_VERSION}-heroku.tar.gz"
+echo "-----> Bundling NewRelic version $NEWRELIC_VERSION"
+curl --silent --max-time 60 --location "$NEWRELIC_URL" | tar xz
+
+
+# tar xzf ${NEWRELIC_FILE} -C ./local
+tar xzf newrelic-${NEWRELIC_VERSION}-heroku.tar.gz -C ./local
+
+
+
+
+
+
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
 cp $LP_DIR/conf/php.ini php
@@ -59,6 +79,16 @@ mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
 cat >>boot.sh <<EOF
+
+# Set NEWRELIC key
+if [ -x "/app/local/bin/newrelic-license" ]; then
+/app/local/bin/newrelic-license
+fi
+
+if [ "\${NEW_RELIC_LICENSE_KEY}" ]; then
+/app/local/bin/newrelic-daemon -c /app/local/etc/newrelic.cfg -d error
+fi
+
 for var in \`env|cut -f1 -d=\`; do
   echo "PassEnv \$var" >> /app/apache/conf/httpd.conf;
 done
