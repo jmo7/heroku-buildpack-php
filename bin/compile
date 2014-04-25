@@ -80,11 +80,12 @@ cat >>boot.sh <<EOF
 # Set NEWRELIC key
 if [ -x "/app/local/bin/newrelic-license" ]; then
 /app/local/bin/newrelic-license
+echo "just set the NewRelic license"
 fi
 
-if [ "\${NEW_RELIC_LICENSE_KEY}" ]; then
-/app/local/bin/newrelic-daemon -c /app/local/etc/newrelic.cfg -d error
-fi
+#if [ "\${NEW_RELIC_LICENSE_KEY}" ]; then
+#/app/local/bin/newrelic-daemon -c /app/local/etc/newrelic.cfg -d error
+#fi
 
 for var in \`env|cut -f1 -d=\`; do
   echo "PassEnv \$var" >> /app/apache/conf/httpd.conf;
